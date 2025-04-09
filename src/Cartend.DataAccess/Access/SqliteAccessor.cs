@@ -29,7 +29,7 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
 
             return result;
         }
-        catch (Exception _)
+        catch (Exception)
         {
             Console.WriteLine("Dang");
             throw;
@@ -49,7 +49,7 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
         {
             return await command.ExecuteNonQueryAsync();
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             Console.WriteLine("Dang");
             throw;
