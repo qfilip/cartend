@@ -10,7 +10,7 @@ public static class DependencyInjection
     {
         services.AddScoped(_ =>
         {
-            var dbPath = Path.Combine(env.WebRootPath, "database");
+            var dbPath = Path.Combine(env.WebRootPath, "database.db3");
             var connectionString = $"Datasource={dbPath}";
             return new SqliteAccessor(connectionString);
         });
