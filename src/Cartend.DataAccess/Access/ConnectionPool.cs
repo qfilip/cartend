@@ -9,12 +9,10 @@ public class ConnectionPool
     private SemaphoreSlim _connectionsGate;
     public ConnectionPool(string connectionString)
     {
-        _connections = new[]
-        {
-            new SqliteConnection(connectionString),
-            new SqliteConnection(connectionString),
-            new SqliteConnection(connectionString)
-        };
+        _connections = Enumerable.Range(0, 3)
+            .Select(x => new SqliteConnection(connectionString))
+            .ToArray();
+
         _connectionsGate = new(_connections.Length);
         _requestGate = new SemaphoreSlim(1);
     }
