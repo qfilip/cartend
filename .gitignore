@@ -10,7 +10,7 @@ node_modules/
 .angular/
 
 # database
-database
+database.db3
 
 # compiled output
 .gitignore.bak
