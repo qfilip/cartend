@@ -1,15 +1,16 @@
 ﻿using Cartend.DataAccess.Abstractions;
+using Cartend.DataAccess.Access;
 using Microsoft.Data.Sqlite;
 
 namespace Cartend.DataAccess;
 
 public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
 {
-    private readonly string _connectionString;
+    private readonly ConnectionPool _pool;
     private List<Action<SqliteCommand>> _transactionCommandsPrep = new();
-    public SqliteAccessor(string connectionString)
+    public SqliteAccessor(ConnectionPool pool)
     {
-        _connectionString = connectionString;
+        _pool = pool;
     }
 
     public void AddTransactionCommandPrep(Action<SqliteCommand> prep) => _transactionCommandsPrep.Add(prep);
@@ -18,15 +19,13 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
         Action<SqliteCommand> prepareCommand,
         Func<SqliteDataReader, T> readData)
     {
-        using var connection = new SqliteConnection(_connectionString);
+        var connection = await _pool.GetConnection();
         using var command = connection.CreateCommand();
         prepareCommand(command);
         try
         {
-            connection.Open();
             var reader = await command.ExecuteReaderAsync();
             var result = readData(reader);
-            connection.Close();
 
             return result;
         }
@@ -35,25 +34,29 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
             Console.WriteLine("Dang");
             throw;
         }
+        finally
+        {
+            _pool.ReleaseConnection();
+        }
     }
 
     public async Task<int> CommandAsync(Action<SqliteCommand> prepareCommand)
     {
-        using var connection = new SqliteConnection(_connectionString);
+        var connection = await _pool.GetConnection();
         using var command = connection.CreateCommand();
         prepareCommand(command);
         try
         {
-            connection.Open();
-            var result = await command.ExecuteNonQueryAsync();
-            connection.Close();
-
-            return result;
+            return await command.ExecuteNonQueryAsync();
         }
         catch (Exception ex)
         {
             Console.WriteLine("Dang");
             throw;
+        }
+        finally
+        {
+            _pool.ReleaseConnection();
         }
     }
 
@@ -62,10 +65,7 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
         var result = 0;
         if (_transactionCommandsPrep.Count == 0) return result;
 
-        using var connection = new SqliteConnection(_connectionString);
-        
-
-        connection.Open();
+        var connection = await _pool.GetConnection();
         using var transaction = connection.BeginTransaction();
         
         var commands = _transactionCommandsPrep
@@ -94,8 +94,8 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
             foreach (var cmd in commands)
                 cmd.Dispose();
 
-            connection.Close();
             _transactionCommandsPrep.Clear();
+            _pool.ReleaseConnection();
         }
 
         return result;
