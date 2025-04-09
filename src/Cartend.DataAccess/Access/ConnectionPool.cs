@@ -4,23 +4,36 @@ namespace Cartend.DataAccess.Access;
 
 public class ConnectionPool
 {
-    private SqliteConnection _connection;
-    private SemaphoreSlim Gate = new(1);
+    private SqliteConnection[] _connections;
+    private SemaphoreSlim _requestGate;
+    private SemaphoreSlim _connectionsGate;
     public ConnectionPool(string connectionString)
     {
-        _connection = new SqliteConnection(connectionString);
+        _connections = new[]
+        {
+            new SqliteConnection(connectionString),
+            new SqliteConnection(connectionString),
+            new SqliteConnection(connectionString)
+        };
+        _connectionsGate = new(_connections.Length);
+        _requestGate = new SemaphoreSlim(1);
     }
 
     public async Task<SqliteConnection> GetConnection()
     {
-        await Gate.WaitAsync();
-        _connection.Open();
-        return _connection;
+        await _requestGate.WaitAsync();
+        await _connectionsGate.WaitAsync();
+        
+        var connection = _connections.First(x => x.State == System.Data.ConnectionState.Closed);
+        connection.Open();
+        _requestGate.Release();
+
+        return connection;
     }
 
-    public void ReleaseConnection()
+    public void ReleaseConnection(SqliteConnection connection)
     {
-        _connection.Close();
-        Gate.Release();
+        connection.Close();
+        _connectionsGate.Release();
     }
 }

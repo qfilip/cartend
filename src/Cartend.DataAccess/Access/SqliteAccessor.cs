@@ -36,7 +36,7 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
         }
         finally
         {
-            _pool.ReleaseConnection();
+            _pool.ReleaseConnection(connection);
         }
     }
 
@@ -56,7 +56,7 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
         }
         finally
         {
-            _pool.ReleaseConnection();
+            _pool.ReleaseConnection(connection);
         }
     }
 
@@ -95,7 +95,7 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
                 cmd.Dispose();
 
             _transactionCommandsPrep.Clear();
-            _pool.ReleaseConnection();
+            _pool.ReleaseConnection(connection);
         }
 
         return result;
