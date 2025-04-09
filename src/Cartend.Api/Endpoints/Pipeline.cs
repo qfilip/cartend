@@ -1,5 +1,5 @@
 ﻿using Cartend.Api.Logic;
-using Cartend.Api.Logic.Abstractions;
+using Cartend.Logic.Abstractions;
 using static Cartend.Api.Logic.AppResult;
 
 namespace Cartend.Api.Endpoints;
