@@ -1,4 +1,4 @@
-﻿using Cartend.Api.DataAccess.Access.Stores;
+﻿using Cartend.Api.DataAccess.Access.Abstractions.Stores;
 using Cartend.Api.Dtos.Entities;
 using Cartend.Api.Logic.Abstractions;
 
@@ -8,9 +8,9 @@ public static class GetOwnerCars
 {
     public class Handler : IAppHandler<Guid>
     {
-        private readonly AppDataStore _store;
+        private readonly IAppDataStore _store;
 
-        public Handler(AppDataStore store)
+        public Handler(IAppDataStore store)
         {
             _store = store;
         }

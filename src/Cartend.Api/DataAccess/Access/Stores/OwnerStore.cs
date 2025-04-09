@@ -1,4 +1,5 @@
 ﻿using Cartend.Api.DataAccess.Access.Abstractions;
+using Cartend.Api.DataAccess.Access.Abstractions.Stores;
 using Cartend.Api.DataAccess.Entities;
 using Cartend.Api.DataAccess.Tables;
 using Microsoft.Data.Sqlite;
@@ -7,11 +8,11 @@ using System.Text;
 
 namespace Cartend.Api.DataAccess.Access.Stores;
 
-public class OwnerStore : IOwnerStore, IStoreVisitable
+public class OwnerStore : IOwnerStore
 {
-    private readonly SqliteAccessor _accessor;
     private readonly List<Owner> _added = new();
-    public OwnerStore(SqliteAccessor accessor)
+    private readonly IAccessor<SqliteCommand, SqliteDataReader> _accessor;
+    public OwnerStore(IAccessor<SqliteCommand, SqliteDataReader> accessor)
     {
         _accessor = accessor;
     }
@@ -36,12 +37,12 @@ public class OwnerStore : IOwnerStore, IStoreVisitable
             return result.Select(x => new Owner { Entity = x }).ToArray();
         };
 
-        return await _accessor.ExecuteQueryAsync(prep, read);
+        return await _accessor.QueryAsync(prep, read);
     }
 
     public void Add(Owner owner) => _added.Add(owner);
 
-    public void Accept(SqliteAccessor accessor)
+    public void PrepareTransaction()
     {
         if (_added.Count == 0) return;
         var prep = (SqliteCommand cmd) =>
@@ -63,6 +64,6 @@ public class OwnerStore : IOwnerStore, IStoreVisitable
             _added.Clear();
         };
 
-        accessor.AddTransactionCommandPrep(prep);
+        _accessor.AddTransactionCommandPrep(prep);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Cartend.Api.DataAccess.Access;
-using Cartend.Api.DataAccess.Access.Stores;
+using Cartend.Api.DataAccess.Access.Abstractions;
+using Cartend.Api.DataAccess.Access.Abstractions.Stores;
 using Cartend.Api.DataAccess.Entities;
 using Cartend.Api.Logic.Abstractions;
 using Microsoft.Data.Sqlite;
@@ -10,10 +11,10 @@ public static class TestTransaction
 {
     public class Handler : IAppHandler<bool>
     {
-        private readonly AppDataStore _store;
-        private readonly SqliteAccessor _accessor;
+        private readonly IAppDataStore _store;
+        private readonly IAccessor<SqliteCommand, SqliteDataReader> _accessor;
 
-        public Handler(AppDataStore store, SqliteAccessor accessor)
+        public Handler(IAppDataStore store, IAccessor<SqliteCommand, SqliteDataReader> accessor)
         {
             _store = store;
             _accessor = accessor;
@@ -29,7 +30,7 @@ public static class TestTransaction
                 """;
             };
 
-            await _accessor.ExecuteCommandAsync(clearData);
+            await _accessor.CommandAsync(clearData);
 
             var owner1 = new Owner
             {

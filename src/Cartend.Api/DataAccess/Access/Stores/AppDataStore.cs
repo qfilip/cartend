@@ -1,28 +1,31 @@
 ﻿using Cartend.Api.DataAccess.Access.Abstractions;
+using Cartend.Api.DataAccess.Access.Abstractions.Repository;
+using Cartend.Api.DataAccess.Access.Abstractions.Stores;
+using Microsoft.Data.Sqlite;
 
 namespace Cartend.Api.DataAccess.Access.Stores;
 
-public class AppDataStore : IUoW
+public class AppDataStore : IAppDataStore
 {
-    private readonly SqliteAccessor _accessor;
-    private readonly OwnerStore _ownerStore;
-    private readonly CarStore _carStore;
+    private readonly IOwnerStore _ownerStore;
+    private readonly ICarStore _carStore;
+    private readonly IAccessor<SqliteCommand, SqliteDataReader> _accessor;
 
-    public AppDataStore(OwnerStore ownerStore, CarStore carStore, SqliteAccessor accessor)
+    public AppDataStore(IOwnerStore ownerStore, ICarStore carStore, IAccessor<SqliteCommand, SqliteDataReader> accessor)
     {
         _ownerStore = ownerStore;
         _carStore = carStore;
         _accessor = accessor;
     }
 
-    public IOwnerStore Owners => _ownerStore;
-    public ICarStore Cars => _carStore;
+    public IOwnerRepository Owners => _ownerStore;
+    public ICarRepository Cars => _carStore;
 
-    public Task<int> CommitAsync()
+    public Task CommitAsync()
     {
-        _accessor.Visit(_ownerStore);
-        _accessor.Visit(_carStore);
+        _ownerStore.PrepareTransaction();
+        _carStore.PrepareTransaction();
         
-        return _accessor.ExecuteTransactionAsync();
+        return _accessor.CommitAsync();
     }
 }

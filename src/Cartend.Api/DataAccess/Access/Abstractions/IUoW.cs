@@ -2,5 +2,5 @@
 
 public interface IUoW
 {
-    Task<int> CommitAsync();
+    Task CommitAsync();
 }

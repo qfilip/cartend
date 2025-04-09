@@ -1,5 +1,5 @@
 ﻿using Cartend.Api.DataAccess;
-using Cartend.Api.DataAccess.Access.Stores;
+using Cartend.Api.DataAccess.Access.Abstractions.Stores;
 using Cartend.Api.DataAccess.Entities;
 using Cartend.Api.Dtos;
 using Cartend.Api.Dtos.Entities;
@@ -11,8 +11,8 @@ public static class CreateCar
 {
     public class Handler : IAppHandler<CreateCarRequest>
     {
-        private readonly AppDataStore _store;
-        public Handler(AppDataStore store)
+        private readonly IAppDataStore _store;
+        public Handler(IAppDataStore store)
         {
             _store = store;
         }

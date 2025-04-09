@@ -1,10 +1,9 @@
 ﻿using Cartend.Api.DataAccess.Access.Abstractions;
 using Microsoft.Data.Sqlite;
-using System.Transactions;
 
 namespace Cartend.Api.DataAccess.Access;
 
-public class SqliteAccessor : IStoreVisitor
+public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
 {
     private readonly string _connectionString;
     private List<Action<SqliteCommand>> _transactionCommandsPrep = new();
@@ -15,7 +14,7 @@ public class SqliteAccessor : IStoreVisitor
 
     public void AddTransactionCommandPrep(Action<SqliteCommand> prep) => _transactionCommandsPrep.Add(prep);
 
-    public async Task<T> ExecuteQueryAsync<T>(
+    public async Task<T> QueryAsync<T>(
         Action<SqliteCommand> prepareCommand,
         Func<SqliteDataReader, T> readData)
     {
@@ -38,7 +37,7 @@ public class SqliteAccessor : IStoreVisitor
         }
     }
 
-    public async Task<int> ExecuteCommandAsync(Action<SqliteCommand> prepareCommand)
+    public async Task<int> CommandAsync(Action<SqliteCommand> prepareCommand)
     {
         using var connection = new SqliteConnection(_connectionString);
         using var command = connection.CreateCommand();
@@ -58,7 +57,7 @@ public class SqliteAccessor : IStoreVisitor
         }
     }
 
-    public async Task<int> ExecuteTransactionAsync()
+    public async Task<int> CommitAsync()
     {
         var result = 0;
         if (_transactionCommandsPrep.Count == 0) return result;
@@ -100,10 +99,5 @@ public class SqliteAccessor : IStoreVisitor
         }
 
         return result;
-    }
-
-    public void Visit(IStoreVisitable store)
-    {
-        store.Accept(this);
     }
 }

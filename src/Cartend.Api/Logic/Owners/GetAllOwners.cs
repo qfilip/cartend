@@ -1,5 +1,4 @@
-﻿using Cartend.Api.DataAccess.Access.Abstractions;
-using Cartend.Api.DataAccess.Access.Stores;
+﻿using Cartend.Api.DataAccess.Access.Abstractions.Stores;
 using Cartend.Api.Dtos.Entities;
 using Cartend.Api.Logic.Abstractions;
 
@@ -9,8 +8,8 @@ public static class GetAllOwners
 {
     public class Handler : IAppHandler<Unit>
     {
-        private readonly AppDataStore _store;
-        public Handler(AppDataStore store)
+        private readonly IAppDataStore _store;
+        public Handler(IAppDataStore store)
         {
             _store = store;
         }

@@ -1,5 +1,5 @@
 ﻿using Cartend.Api.DataAccess;
-using Cartend.Api.DataAccess.Access.Abstractions;
+using Cartend.Api.DataAccess.Access.Abstractions.Stores;
 using Cartend.Api.DataAccess.Access.Stores;
 using Cartend.Api.DataAccess.Entities;
 using Cartend.Api.DataAccess.Tables;
@@ -13,9 +13,9 @@ public static class CreateOwner
 {
     public class Handler : IAppHandler<CreateOwnerRequest>
     {
-        private readonly AppDataStore _store;
+        private readonly IAppDataStore _store;
 
-        public Handler(AppDataStore store)
+        public Handler(IAppDataStore store)
         {
             _store = store;
         }
