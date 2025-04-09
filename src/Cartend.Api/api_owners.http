@@ -1,0 +1,15 @@
+@Cartend.Api_HostAddress = http://localhost:5025
+
+GET {{Cartend.Api_HostAddress}}/owners
+Accept: application/json
+
+###
+
+Post {{Cartend.Api_HostAddress}}/owners
+Content-Type: application/json
+
+{
+  "name": "s6"
+}
+
+###

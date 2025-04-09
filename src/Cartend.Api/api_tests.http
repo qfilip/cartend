@@ -1,0 +1,3 @@
+@Cartend.Api_HostAddress = http://localhost:5025
+
+GET {{Cartend.Api_HostAddress}}/tests/transaction?fail=false
