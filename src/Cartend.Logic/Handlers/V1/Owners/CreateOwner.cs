@@ -39,9 +39,12 @@ public static class CreateOwner
 
         public string[] Validate(CreateOwnerRequest request)
         {
-            return Validators.Owner.Name.Validate(request.Name)
-                ? []
-                : [Validators.Owner.Name.Error];
+            return new string?[]
+            {
+                Validators.Owner.Name.Validate(request.Name)
+            }
+            .OfType<string>()
+            .ToArray();
         }
     }
 }

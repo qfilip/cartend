@@ -11,6 +11,7 @@ public class AppResult
     public static AppResult Ok() => new AppResult(eOpcode.Ok, [], null);
     public static AppResult Ok(object result) => new AppResult(eOpcode.Ok, [], result);
     public static AppResult NotFound() => new AppResult(eOpcode.NotFound, [], null);
+    public static AppResult NotFound(string message) => new AppResult(eOpcode.NotFound, [message], null);
     public static AppResult Rejected(string error) => new AppResult(eOpcode.Rejected, [error], null);
     public static AppResult Rejected(IEnumerable<string> errors) => new AppResult(eOpcode.Rejected, errors.ToArray(), null);
 

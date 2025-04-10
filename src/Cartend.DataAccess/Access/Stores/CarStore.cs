@@ -1,5 +1,6 @@
 ﻿using Cartend.Api.DataAccess;
 using Cartend.DataAccess.Abstractions;
+using Cartend.DataAccess.Access.Abstractions.Stores;
 using Cartend.DataAccess.Entities;
 using Cartend.DataAccess.Tables;
 using Microsoft.Data.Sqlite;
@@ -18,6 +19,8 @@ public class CarStore : ICarStore
     }
 
     public void Add(Car car) => _added.Add(car);
+
+    public Task<bool> ExistsAsync(Guid id) => StoreUtilities.EntityExistsAsync(id, TableNames.Car, _accessor);
 
     public async Task<Car[]> GetOwnerCarsAsync(Guid ownerId)
     {

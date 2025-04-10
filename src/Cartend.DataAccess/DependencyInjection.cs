@@ -29,6 +29,7 @@ public static class DependencyInjection
 
         services.AddScoped<IOwnerStore, OwnerStore>();
         services.AddScoped<ICarStore, CarStore>();
+        services.AddScoped<ICarServiceStore, CarServiceStore>();
 
         services.AddScoped<IAppDataStore, AppDataStore>();
     }

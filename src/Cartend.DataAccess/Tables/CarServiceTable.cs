@@ -3,7 +3,7 @@ using System.Text.Json.Nodes;
 
 namespace Cartend.DataAccess.Tables;
 
-public class CarService : IPkey<Guid>
+public class CarServiceTable : IPkey<Guid>
 {
     public Guid Id { get; set; }
     public Guid CarId { get; set; }

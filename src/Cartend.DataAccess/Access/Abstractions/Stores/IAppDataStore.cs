@@ -4,4 +4,5 @@ public interface IAppDataStore : IUoW
 {
     IOwnerRepository Owners { get; }
     ICarRepository Cars { get; }
+    ICarServiceRepository CarServices { get; }
 }

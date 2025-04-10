@@ -1,5 +1,6 @@
 ﻿using Cartend.Api.DataAccess;
 using Cartend.DataAccess.Abstractions;
+using Cartend.DataAccess.Access.Abstractions.Stores;
 using Cartend.DataAccess.Entities;
 using Cartend.DataAccess.Tables;
 using Microsoft.Data.Sqlite;
@@ -41,6 +42,8 @@ public class OwnerStore : IOwnerStore
     }
 
     public void Add(Owner owner) => _added.Add(owner);
+
+    public Task<bool> ExistsAsync(Guid id) => StoreUtilities.EntityExistsAsync(id, TableNames.Owner, _accessor);
 
     public void PrepareTransaction()
     {

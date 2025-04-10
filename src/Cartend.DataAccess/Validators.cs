@@ -6,8 +6,7 @@ public static class Validators
     {
         public static class Name
         {
-            public static bool Validate(string? x) => x != null && x.Length > 1;
-            public static string Error => "Name must have at least 2 chars";
+            public static string? Validate(string? x) => x != null && x.Length > 1 ? null : "Name must have at least 2 chars";
         }
     }
 
@@ -15,8 +14,15 @@ public static class Validators
     {
         public static class Name
         {
-            public static bool Validate(string? x) => x != null && x.Length > 1;
-            public static string Error => "Name must have at least 2 chars";
+            public static string? Validate(string? x) => x != null && x.Length > 1 ? null : "Name must have at least 2 chars";
+        }
+    }
+
+    public static class CarService
+    {
+        public static class ServicedBy
+        {
+            public static string? Validate(string? x) => x != null && x.Length > 1 ? null : "ServicedBy must have at least 2 chars";
         }
     }
 }

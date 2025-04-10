@@ -20,13 +20,17 @@ public static class CreateCar
 
         public async Task<AppResult> Handle(CreateCarRequest request)
         {
+            var ownerExists = await _store.Owners.ExistsAsync(request.OwnerId);
+            if (!ownerExists)
+                return AppResult.NotFound($"Owner with id {request.OwnerId} not found");
+
             var entity = new Car
             {
                 Entity = new DataAccess.Tables.CarTable
                 {
                     Id = Guid.NewGuid(),
                     Name = request.Name,
-                    OwnerId = request.OwnerId,
+                    OwnerId = request.OwnerId
                 }
             };
 
@@ -38,9 +42,12 @@ public static class CreateCar
 
         public string[] Validate(CreateCarRequest request)
         {
-            return Validators.Car.Name.Validate(request.Name)
-                ? []
-                : [Validators.Car.Name.Error];
+            return new string?[]
+            {
+                Validators.Car.Name.Validate(request.Name)
+            } 
+            .OfType<string>()
+            .ToArray();
         }
     }
 }
