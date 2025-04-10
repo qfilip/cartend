@@ -9,5 +9,5 @@ public class CarServiceTable : IPkey<Guid>
     public Guid CarId { get; set; }
     public string? ServicedBy { get; set; }
     public DateTime ServicedAt { get; set; }
-    public JsonObject? WorkDone { get; set; }
+    public string? WorkDone { get; set; }
 }

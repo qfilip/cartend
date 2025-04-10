@@ -21,7 +21,7 @@ internal static class StoreUtilities
             while (reader.Read())
                 count = reader.GetFieldValue<int>("count");
 
-            return count == 0;
+            return count == 1;
         };
 
         return await accessor.QueryAsync(prep, read);

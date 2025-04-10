@@ -15,6 +15,10 @@ public static class DependencyInjection
         services.AddTransient<GetOwnerCars.Handler>();
         services.AddTransient<CreateCar.Handler>();
 
+        // car services
+        services.AddTransient<GetCarServices.Handler>();
+        services.AddTransient<CreateCarService.Handler>();
+
         // tests
         services.AddTransient<TestTransaction.Handler>();
     }

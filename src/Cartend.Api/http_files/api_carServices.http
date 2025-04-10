@@ -1,0 +1,20 @@
+
+@Cartend.Api_HostAddress = http://localhost:5025
+
+
+GET {{Cartend.Api_HostAddress}}/car_services?carId=84a0a68b-43a8-44d2-b96f-010237234ccd
+
+###
+
+POST {{Cartend.Api_HostAddress}}/car_services
+Content-Type: application/json
+
+{
+  "carId": "84a0a68b-43a8-44d2-b96f-010237234ccd",
+  "servicedBy": "bob",
+  "workDone": {
+    "wheels": "replaced"
+  }
+}
+
+###

@@ -24,6 +24,8 @@ public static class CreateCarService
             if (!carExists)
                 return AppResult.NotFound($"Car with id {request.CarId} not found");
 
+            var str = request.WorkDone?.ToString();
+
             var entity = new CarService
             {
                 Entity = new()
@@ -32,7 +34,7 @@ public static class CreateCarService
                     CarId = request.CarId,
                     ServicedAt = DateTime.Now,
                     ServicedBy = request.ServicedBy,
-                    WorkDone = request.WorkDone
+                    WorkDone = request.WorkDone?.ToString()
                 }
             };
 

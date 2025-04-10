@@ -4,4 +4,5 @@ namespace Cartend.DataAccess.Abstractions;
 
 public interface ICarServiceRepository : IRepository<CarService>
 {
+    Task<CarService[]> GetCarServiceHistoryAsync(Guid carId);
 }

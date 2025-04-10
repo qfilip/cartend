@@ -8,7 +8,7 @@ public class CarServiceDto
     public Guid Id { get; set; }
     public string? ServicedBy { get; set; }
     public DateTime ServicedAt { get; set; }
-    public JsonObject? WorkDone { get; set; }
+    public string? WorkDone { get; set; }
     public CarDto? Car { get; set; }
 
     public static CarServiceDto From(CarService x)

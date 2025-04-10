@@ -13,6 +13,7 @@ public static class EndpointMapper
 
         var carServices = app.MapGroup("car_services/");
         CreateCarService.Map(carServices);
+        GetCarServices.Map(carServices);
 
         var owners = app.MapGroup("owners/");
         GetOwners.Map(owners);
