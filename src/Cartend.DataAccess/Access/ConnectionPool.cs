@@ -17,7 +17,7 @@ public class ConnectionPool
         _requestGate = new SemaphoreSlim(1);
     }
 
-    public async Task<SqliteConnection> GetConnection()
+    public async Task<SqliteConnection> GetConnectionAsync()
     {
         await _requestGate.WaitAsync();
         await _connectionsGate.WaitAsync();

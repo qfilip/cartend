@@ -19,7 +19,7 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
         Action<SqliteCommand> prepareCommand,
         Func<SqliteDataReader, T> readData)
     {
-        var connection = await _pool.GetConnection();
+        var connection = await _pool.GetConnectionAsync();
         using var command = connection.CreateCommand();
         prepareCommand(command);
         try
@@ -42,7 +42,7 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
 
     public async Task<int> CommandAsync(Action<SqliteCommand> prepareCommand)
     {
-        var connection = await _pool.GetConnection();
+        var connection = await _pool.GetConnectionAsync();
         using var command = connection.CreateCommand();
         prepareCommand(command);
         try
@@ -65,7 +65,7 @@ public class SqliteAccessor : IAccessor<SqliteCommand, SqliteDataReader>
         var result = 0;
         if (_transactionCommandsPrep.Count == 0) return result;
 
-        var connection = await _pool.GetConnection();
+        var connection = await _pool.GetConnectionAsync();
         using var transaction = connection.BeginTransaction();
         
         var commands = _transactionCommandsPrep
