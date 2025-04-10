@@ -2,7 +2,7 @@
 @Cartend.Api_HostAddress = http://localhost:5025
 
 
-GET {{Cartend.Api_HostAddress}}/cars?ownerId=a7e49574-243e-4d08-a0c6-10f8e6ec5a1e
+GET {{Cartend.Api_HostAddress}}/cars?ownerId=31a1d035-e46b-4d0d-ab36-6c0731f44ce7
 
 ###
 
@@ -10,8 +10,8 @@ POST {{Cartend.Api_HostAddress}}/cars
 Content-Type: application/json
 
 {
-  "ownerId": "c3ba4780-4fb3-4aa5-a973-2a8a4d87ced5",
-  "name": "see7"
+  "ownerId": "31a1d035-e46b-4d0d-ab36-6c0731f44ce7",
+  "name": "jazz"
 }
 
 ###

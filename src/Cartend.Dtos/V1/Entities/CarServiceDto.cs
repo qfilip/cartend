@@ -8,7 +8,7 @@ public class CarServiceDto
     public Guid Id { get; set; }
     public string? ServicedBy { get; set; }
     public DateTime ServicedAt { get; set; }
-    public string? WorkDone { get; set; }
+    public JsonObject? WorkDone { get; set; }
     public CarDto? Car { get; set; }
 
     public static CarServiceDto From(CarService x)
@@ -18,7 +18,9 @@ public class CarServiceDto
             Id = x.Entity.Id,
             ServicedAt = x.Entity.ServicedAt,
             ServicedBy = x.Entity.ServicedBy,
-            WorkDone = x.Entity.WorkDone
+            WorkDone = x.Entity.WorkDone != null
+                ? JsonObject.Parse(x.Entity.WorkDone ?? "{}") as JsonObject
+                : JsonObject.Parse("{}") as JsonObject
         };
     }
 }
